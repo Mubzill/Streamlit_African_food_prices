@@ -210,7 +210,7 @@ def load_data():
     return food
 
 
-st.title("Africa_food_price Dashboard")
+st.title("Africa food price Dashboard")
 
 try:
     food = load_data()
