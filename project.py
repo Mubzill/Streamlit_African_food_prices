@@ -223,7 +223,7 @@ try:
     st.write(Produce_selected.head(20)) 
     
     #bar chat
-    st.write("""### Sum of price by Selected Product(s)""")
+    st.write("""### Sum of prices by selected product(s)""")
     bar1 =  Produce_selected.groupby(['Produce'])['Price_in_usd'].sum().sort_values(ascending=True)
     st.bar_chart(bar1)
 except ValueError as e:
@@ -232,7 +232,7 @@ except ValueError as e:
     """ %e.reason)
 
 def main():
-    st.write("""### Sum of Price by Selected Years""")
+    st.write("""### Sum of Prices by Selected Years""")
    
     # Load the data
     food = load_data()
@@ -265,32 +265,7 @@ def main():
     plt.grid(True)
     st.pyplot(fig)
     
-    
-    
-    st.write("""### Sum of Price by Selected Countires""")
-    Country = food.Country.unique()
-    Country_selection = st.multiselect('Select Countries', Country, [Country[0], Country[1]])
-    if not Country_selection:
-        st.warning('Please select at least one Country.')
-        return
-
-    # Filter the dataset based on selected countries
-    filtered_Country = food[food["Country"].isin( Country_selection)]
-    def format_Millions(x, pos):
-        return f"${x / 1e6:.2f}M"
-    formatter = FuncFormatter(format_Millions)
-
-    # Create a Seaborn plot for the sum of prices by country
-    fig3, ax3 = plt.subplots(figsize=(10, 6))
-    sns.barplot(x="Country", y="Price_in_usd", data= filtered_Country, estimator=sum, ci=None)
-    plt.gca().yaxis.set_major_formatter(formatter)
-    plt.xticks(rotation=45)
-    plt.xlabel("Country")
-    plt.ylabel("Sum Price (USD)")
-    st.pyplot(fig3)
-   
-    
-    st.write("""### Sum of Price by Selected Months""")
+    st.write("""### Sum of Prices by Selected Months""")
 
     # Create a multiselect widget for selecting years
     all_months = sorted(food['Month_name'].unique())
@@ -318,6 +293,33 @@ def main():
     plt.title('Sum of Price vs. Months')
     plt.grid(True)
     st.pyplot(fig2)
+    
+    
+    
+    st.write("""### Sum of Prices by Selected Countires""")
+    Country = food.Country.unique()
+    Country_selection = st.multiselect('Select Countries', Country, [Country[0], Country[1]])
+    if not Country_selection:
+        st.warning('Please select at least one Country.')
+        return
+
+    # Filter the dataset based on selected countries
+    filtered_Country = food[food["Country"].isin( Country_selection)]
+    def format_Millions(x, pos):
+        return f"${x / 1e6:.2f}M"
+    formatter = FuncFormatter(format_Millions)
+
+    # Create a Seaborn plot for the sum of prices by country
+    fig3, ax3 = plt.subplots(figsize=(10, 6))
+    sns.barplot(x="Country", y="Price_in_usd", data= filtered_Country, estimator=sum, ci=None)
+    plt.gca().yaxis.set_major_formatter(formatter)
+    plt.xticks(rotation=45)
+    plt.xlabel("Country")
+    plt.ylabel("Sum Price (USD)")
+    st.pyplot(fig3)
+   
+    
+
     
     
     
